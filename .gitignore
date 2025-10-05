@@ -13,3 +13,7 @@ coverage/
 
 pubspec.lock
 pubspec_overrides.yaml
+
+# Code signing artifacts
+**/Frameworks/**/_CodeSignature/
+**/Frameworks/**/Versions/*/_CodeSignature/

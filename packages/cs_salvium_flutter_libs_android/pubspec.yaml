@@ -12,10 +12,14 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  cs_salvium_flutter_libs_platform_interface: ^1.0.0
-  cs_salvium_flutter_libs_android_x86_64: ^1.0.0
-  cs_salvium_flutter_libs_android_armeabi_v7a: ^1.0.0
-  cs_salvium_flutter_libs_android_arm64_v8a: ^1.0.0
+  cs_salvium_flutter_libs_platform_interface:
+    path: ../cs_salvium_flutter_libs_platform_interface
+  cs_salvium_flutter_libs_android_x86_64:
+    path: ../cs_salvium_flutter_libs_android_x86_64
+  cs_salvium_flutter_libs_android_armeabi_v7a:
+    path: ../cs_salvium_flutter_libs_android_armeabi_v7a
+  cs_salvium_flutter_libs_android_arm64_v8a:
+    path: ../cs_salvium_flutter_libs_android_arm64_v8a
 
 dev_dependencies:
   flutter_test:

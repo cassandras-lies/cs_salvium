@@ -14,33 +14,62 @@ Future<void> createFramework({
   );
   await frameworkDir.create(recursive: true);
 
+  // Create Versions/A structure
+  final versionsDir = Directory("${frameworkDir.path}${Platform.pathSeparator}Versions${Platform.pathSeparator}A");
+  await versionsDir.create(recursive: true);
+  
+  final resourcesDir = Directory("${versionsDir.path}${Platform.pathSeparator}Resources");
+  await resourcesDir.create(recursive: true);
+  
+  final macosDir = Directory("${versionsDir.path}${Platform.pathSeparator}MacOS");
+  await macosDir.create(recursive: true);
+
   // Change directory to the framework directory and run commands
   final temp = Directory.current;
   Directory.current = frameworkDir;
+  
+  // Create the binary in Versions/A/MacOS
   await runAsync(
     "lipo",
     [
       "-create",
       pathToDylib,
       "-output",
-      "${frameworkDir.path}"
-          "${Platform.pathSeparator}$frameworkName",
+      "${versionsDir.path}${Platform.pathSeparator}MacOS${Platform.pathSeparator}$frameworkName",
     ],
   );
+  
   await runAsync("install_name_tool", [
     "-id",
     "@rpath"
         "${Platform.pathSeparator}$frameworkName.framework"
         "${Platform.pathSeparator}$frameworkName",
-    "${frameworkDir.path}"
-        "${Platform.pathSeparator}$frameworkName",
+    "${versionsDir.path}${Platform.pathSeparator}MacOS${Platform.pathSeparator}$frameworkName",
   ]);
+  
+  // Create symlinks
+  await runAsync("ln", ["-sf", "A", "Versions${Platform.pathSeparator}Current"]);
+  await runAsync("ln", ["-sf", "Versions${Platform.pathSeparator}Current${Platform.pathSeparator}Resources", "Resources"]);
+  await runAsync("ln", ["-sf", "Versions${Platform.pathSeparator}Current${Platform.pathSeparator}MacOS", "MacOS"]);
+  
+  // Create hybrid structure for compatibility:
+  // Copy binary to root for linker compatibility
+  await runAsync("cp", [
+    "${versionsDir.path}${Platform.pathSeparator}MacOS${Platform.pathSeparator}$frameworkName",
+    "${frameworkDir.path}${Platform.pathSeparator}$frameworkName"
+  ]);
+  
+  // Copy Info.plist to root for linker compatibility
+  await runAsync("cp", [
+    "${resourcesDir.path}${Platform.pathSeparator}Info.plist",
+    "${frameworkDir.path}${Platform.pathSeparator}Info.plist"
+  ]);
+  
   Directory.current = temp;
 
-  // Create Info.plist file
+  // Create Info.plist file in Versions/A/Resources
   final plistFile = File(
-    "${frameworkDir.path}"
-    "${Platform.pathSeparator}Info.plist",
+    "${resourcesDir.path}${Platform.pathSeparator}Info.plist",
   );
   await plistFile.writeAsString('''
 <?xml version="1.0" encoding="UTF-8"?>

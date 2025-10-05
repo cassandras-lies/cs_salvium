@@ -12,3 +12,6 @@ PRODUCT_BUNDLE_IDENTIFIER = com.cypherstack.exampleApp
 
 // The copyright displayed in application information
 PRODUCT_COPYRIGHT = Copyright © 2024 com.cypherstack. All rights reserved.
+
+// Link the SalviumWallet framework
+OTHER_LDFLAGS = $(inherited) -framework "SalviumWallet"

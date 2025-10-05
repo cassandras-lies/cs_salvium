@@ -12,12 +12,18 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  cs_salvium_flutter_libs_platform_interface: ^1.0.0
-  cs_salvium_flutter_libs_android: ^1.0.0
-  cs_salvium_flutter_libs_ios: ^1.0.0
-  cs_salvium_flutter_libs_linux: ^1.0.0
-  cs_salvium_flutter_libs_macos: ^1.0.0
-  cs_salvium_flutter_libs_windows: ^1.0.0
+  cs_salvium_flutter_libs_platform_interface:
+    path: ../cs_salvium_flutter_libs_platform_interface
+  cs_salvium_flutter_libs_android:
+    path: ../cs_salvium_flutter_libs_android
+  cs_salvium_flutter_libs_ios:
+    path: ../cs_salvium_flutter_libs_ios
+  cs_salvium_flutter_libs_linux:
+    path: ../cs_salvium_flutter_libs_linux
+  cs_salvium_flutter_libs_macos:
+    path: ../cs_salvium_flutter_libs_macos
+  cs_salvium_flutter_libs_windows:
+    path: ../cs_salvium_flutter_libs_windows
 
 dev_dependencies:
   flutter_test:

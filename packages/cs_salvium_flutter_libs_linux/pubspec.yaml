@@ -12,7 +12,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  cs_salvium_flutter_libs_platform_interface: ^1.0.0
+  cs_salvium_flutter_libs_platform_interface:
+    path: ../cs_salvium_flutter_libs_platform_interface
 
 dev_dependencies:
   flutter_test:

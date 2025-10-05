@@ -15,10 +15,31 @@ Binaries required to use cs_salvium in a Flutter project
 
   s.source           = { :path => '.' }
   s.source_files = 'Classes/**/*'
-  s.vendored_frameworks = 'Frameworks/*'
+  s.vendored_frameworks = 'Frameworks/SalviumWallet.framework'
+  
+  # Prepare command to handle codesigning at build time
+  s.prepare_command = <<-CMD
+    # Remove symlinks temporarily for codesigning
+    rm -f "Frameworks/SalviumWallet.framework/SalviumWallet"
+    rm -f "Frameworks/SalviumWallet.framework/MacOS"
+    rm -f "Frameworks/SalviumWallet.framework/Resources"
+    
+    # Sign the framework
+    echo "Signing SalviumWallet.framework..."
+    codesign --force --sign - "Frameworks/SalviumWallet.framework"
+    
+    # Restore symlinks after signing
+    ln -sf Versions/A/MacOS/SalviumWallet "Frameworks/SalviumWallet.framework/SalviumWallet"
+    ln -sf Versions/Current/MacOS "Frameworks/SalviumWallet.framework/MacOS"
+    ln -sf Versions/Current/Resources "Frameworks/SalviumWallet.framework/Resources"
+  CMD
+  s.pod_target_xcconfig = { 
+    'DEFINES_MODULE' => 'YES',
+    'FRAMEWORK_SEARCH_PATHS' => '$(PODS_TARGET_SRCROOT)/Frameworks',
+    'OTHER_LDFLAGS' => '-framework "SalviumWallet"'
+  }
   s.dependency 'FlutterMacOS'
 
   s.platform = :osx, '10.11'
-  s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES' }
   s.swift_version = '5.0'
 end
